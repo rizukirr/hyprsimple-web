@@ -109,12 +109,12 @@ function Desktop() {
               poster={useBaseUrl('/img/desktop.webp')}
               width={1920}
               height={1080}
-              src="https://github.com/user-attachments/assets/f43671d7-4cd2-4cef-a13d-b3c28e432ccd"
+              src="https://github.com/user-attachments/assets/4ea8e00c-2346-4a55-a725-0c8e77bfcc81"
             >
               <a href="https://github.com/rizukirr/hyprsimple#demo">Watch the demo on GitHub</a>
             </video>
           </div>
-          <figcaption>The bar, the launcher and the theme carousel, recorded on a real install.</figcaption>
+          <figcaption>The hyprsimple theme on a real install: the power menu, the theme and wallpaper pickers, fastfetch with Hypri and a region screenshot.</figcaption>
         </figure>
       </div>
     </section>
