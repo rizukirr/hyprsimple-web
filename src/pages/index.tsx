@@ -5,7 +5,7 @@ import useBaseUrl, { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import repo from '@site/src/data/repo.json';
 import { THEMES, openPicker, setTheme, useTheme } from '@site/src/lib/theme';
-import ThemeStage from '@site/src/components/ThemeStage';
+import ThemeStage, { HypriLanding } from '@site/src/components/ThemeStage';
 import Keyboard from '@site/src/components/Keyboard';
 import Mapping from '@site/src/components/Mapping';
 import Command from '@site/src/components/Command';
@@ -39,10 +39,11 @@ function Hero() {
 function StageFallback() {
   const t = THEMES.find((x) => x.slug === 'deep-sea') ?? THEMES[0];
   return (
-    <figure className="hs-stage">
+    <figure className="hs-stage hs-stage--hypri">
       <div className="hs-stage__frame" data-slot="hero" data-kind="product">
         <img src={useBaseUrl(`/wallpapers/${t.slug}.webp`)} alt={`${t.name} wallpaper`} width={t.wall.width} height={t.wall.height} fetchPriority="high" />
       </div>
+      <HypriLanding />
     </figure>
   );
 }

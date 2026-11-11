@@ -270,6 +270,7 @@ async function syncMascot() {
         .png().toBuffer();
       await sharp(panelless).resize({ width: 520 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o);
     }],
+    ['landing.webp', 'hypri-landing.png', (i, o) => sharp(i).resize({ width: 880 }).webp({ quality: 82, alphaQuality: 90 }).toFile(o)],
     // Hypri sits on the left of the footer and gestures at the wordmark, so only her side of the picture is kept.
     ['footer.webp', 'hypri-footer.png', (i, o) => sharp(i).extract({ left: 0, top: 60, width: 940, height: 964 }).resize({ width: 560 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o)],
   ];

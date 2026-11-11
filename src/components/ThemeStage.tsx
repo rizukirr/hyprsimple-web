@@ -66,6 +66,11 @@ function render(canvas: HTMLCanvasElement, img: HTMLImageElement, theme: Theme, 
   }
 }
 
+// Hypri on the floor in front of the wallpaper's lower left corner, with her laptop over its edge. Clicks pass through her to the split.
+export function HypriLanding() {
+  return <img className="hs-stage__hypri" src={useBaseUrl('/img/mascot/landing.webp')} alt="" width={880} height={785} decoding="async" fetchPriority="high" />;
+}
+
 export default function ThemeStage() {
   const theme = useTheme();
   const src = useBaseUrl(`/wallpapers/${theme.slug}.webp`);
@@ -102,7 +107,7 @@ export default function ThemeStage() {
   const index = THEMES.findIndex((t) => t.slug === theme.slug) + 1;
 
   return (
-    <figure className="hs-stage">
+    <figure className="hs-stage hs-stage--hypri">
       <div
         className="hs-stage__frame"
         data-slot="hero"
@@ -128,11 +133,11 @@ export default function ThemeStage() {
         <canvas ref={canvas} aria-hidden="true" />
         <span className="hs-stage__seam" aria-hidden="true" />
       </div>
+      <HypriLanding />
       <figcaption className="hs-stage__bar">
         <span className="hs-stage__name">
           <Swatches theme={theme} />
-          <span>{theme.name}</span>
-          <span className="hs-stage__count">{index} of {THEMES.length}</span>
+          <span className="hs-stage__theme" title={`${theme.name}, ${index} of ${THEMES.length}`}>{theme.name}</span>
         </span>
         <span className="hs-stage__keys">
           <button type="button" className="hs-key hs-key--small" onClick={() => stepTheme(-1)} aria-label="Previous theme">[</button>
