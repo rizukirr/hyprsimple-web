@@ -2,11 +2,13 @@ import React, { type ReactNode } from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 // Hypri, the hyprsimple mascot, beside a message for a list that came up empty.
-export function EmptyState({ children }: { children: ReactNode }) {
+// `empty` is Hypri on her own. `empty-theme` adds the "No theme matches" panel drawn into the picture.
+export function EmptyState({ children, art = 'empty' }: { children: ReactNode; art?: 'empty' | 'empty-theme' }) {
+  const size = art === 'empty' ? { width: 520, height: 666 } : { width: 1024, height: 683 };
   return (
-    <div className="hs-empty">
-      <div className="hs-empty__art" data-slot="hypri-empty" data-kind="product">
-        <img src={useBaseUrl('/img/mascot/empty.webp')} alt="" width={960} height={640} loading="lazy" decoding="async" />
+    <div className={`hs-empty hs-empty--${art}`}>
+      <div className="hs-empty__art" data-slot={`hypri-${art}`} data-kind="product">
+        <img src={useBaseUrl(`/img/mascot/${art}.webp`)} alt="" {...size} loading="lazy" decoding="async" />
       </div>
       <div className="hs-empty__text">{children}</div>
     </div>

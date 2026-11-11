@@ -122,7 +122,7 @@ export function PickerDialog() {
           </ul>
         ) : (
           <div className="hs-picker__empty">
-            <EmptyState>
+            <EmptyState art="empty-theme">
               <p>No theme matches "{query}".</p>
               <p>Clear the filter to see all forty, or type light or dark.</p>
             </EmptyState>

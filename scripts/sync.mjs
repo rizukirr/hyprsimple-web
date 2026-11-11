@@ -5,7 +5,7 @@
 //   src/data/keys.json           the keybinding tables from the README
 //   src/css/themes.generated.css one token block per theme
 //   static/wallpapers/           a resized copy of each theme's first wallpaper
-import { readFile, writeFile, mkdir, readdir, rm, access } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, rm, access, stat } from 'node:fs/promises';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse as parseToml } from 'smol-toml';
@@ -252,16 +252,31 @@ async function syncMascot() {
   await mkdir(MASCOT_OUT, { recursive: true });
   const src = (f) => join(MASCOT, f);
   const out = (f) => join(MASCOT_OUT, f);
+  // [output, source, make]. A copy is rebuilt whenever its source is newer.
   const jobs = [
-    ['favicon.ico', async () => writeFile(out('favicon.ico'), await readFile(src('hypri-favicon.ico')))],
-    ['icon-64.png', () => sharp(src('hypri-icon-64.png')).png().toFile(out('icon-64.png'))],
-    ['icon-180.png', () => sharp(src('hypri-icon-180.png')).png().toFile(out('icon-180.png'))],
-    ['social.jpg', () => sharp(src('hyprsimple-social-1200x630.png')).jpeg({ quality: 86, mozjpeg: true }).toFile(out('social.jpg'))],
-    ['empty.webp', () => sharp(src('a_detailed_anime_style_digital_illustration_in_a.png')).flatten({ background: '#181e45' }).resize({ width: 960 }).webp({ quality: 78 }).toFile(out('empty.webp'))],
-    // The source has a broken cutout in its top right corner. Flattening onto the scene's own navy fills it.
-    ['lost.webp', () => sharp(src('a_detailed_anime_style_digital_illustration_a_se.png')).flatten({ background: '#181e45' }).resize({ width: 1280 }).webp({ quality: 78 }).toFile(out('lost.webp'))],
+    ['favicon.ico', 'hypri-favicon.ico', async (i, o) => writeFile(o, await readFile(i))],
+    ['icon-64.png', 'hypri-icon-64.png', (i, o) => sharp(i).png().toFile(o)],
+    ['icon-180.png', 'hypri-icon-180.png', (i, o) => sharp(i).png().toFile(o)],
+    ['social.jpg', 'hyprsimple-social-1200x630.png', (i, o) => sharp(i).jpeg({ quality: 86, mozjpeg: true }).toFile(o)],
+    // The art below is cut out on transparency, so it sits on whichever theme is on.
+    ['lost.webp', '404-not-found.png', (i, o) => sharp(i).resize({ width: 1280 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o)],
+    ['empty-theme.webp', 'theme-not-found.png', (i, o) => sharp(i).resize({ width: 1024 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o)],
+    // Hypri alone, without the "No theme matches" panel, for searches that are not about themes.
+    // Her knee reaches past the panel's left edge, so the crop keeps 800px and the strip where the panel's edge sits is cleared.
+    ['empty.webp', 'theme-not-found.png', async (i, o) => {
+      const rect = (w, h) => Buffer.from(`<svg width="${w}" height="${h}"><rect width="${w}" height="${h}"/></svg>`);
+      const panelless = await sharp(i).extract({ left: 0, top: 0, width: 800, height: 1024 })
+        .composite([{ input: rect(72, 470), left: 728, top: 250, blend: 'dest-out' }, { input: rect(40, 80), left: 760, top: 180, blend: 'dest-out' }])
+        .png().toBuffer();
+      await sharp(panelless).resize({ width: 520 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o);
+    }],
+    // Hypri sits on the left of the footer and gestures at the wordmark, so only her side of the picture is kept.
+    ['footer.webp', 'hypri-footer.png', (i, o) => sharp(i).extract({ left: 0, top: 60, width: 940, height: 964 }).resize({ width: 560 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o)],
   ];
-  for (const [name, make] of jobs) if (!(await exists(out(name)))) await make();
+  for (const [name, from, make] of jobs) {
+    const [i, o] = [src(from), out(name)];
+    if (!(await exists(o)) || (await stat(i)).mtimeMs > (await stat(o)).mtimeMs) await make(i, o);
+  }
   return jobs.length;
 }
 

@@ -8,7 +8,7 @@ export default function NotFoundContent(): React.ReactNode {
     <main className="hs-lost">
       <div className="container hs-lost__grid">
         <figure className="hs-lost__art" data-slot="hypri-lost" data-kind="product">
-          <img src={useBaseUrl('/img/mascot/lost.webp')} alt="Hypri, the hyprsimple mascot, sitting cross-legged and puzzled beside a large 404" width={1280} height={720} fetchPriority="high" />
+          <img src={useBaseUrl('/img/mascot/lost.webp')} alt="Hypri, the hyprsimple mascot, sitting cross-legged and puzzled beside a large 404" width={1280} height={853} fetchPriority="high" />
         </figure>
         <div className="hs-lost__text">
           <h1>This page is not here</h1>
