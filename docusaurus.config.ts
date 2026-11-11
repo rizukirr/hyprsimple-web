@@ -69,7 +69,6 @@ const config: Config = {
     colorMode: { defaultMode: 'dark', disableSwitch: false, respectPrefersColorScheme: false },
     navbar: {
       title: 'hyprsimple',
-      logo: { alt: 'hyprsimple home', src: 'img/mascot/icon-64.png', width: 32, height: 32 },
       hideOnScroll: false,
       items: [
         { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },
