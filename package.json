@@ -7,7 +7,7 @@
     "build": "node scripts/sync.mjs && docusaurus build",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
-    "typecheck": "tsc"
+    "typecheck": "node scripts/sync.mjs && tsc"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",

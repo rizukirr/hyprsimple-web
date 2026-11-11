@@ -1,5 +1,6 @@
 {
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": { "baseUrl": ".", "strict": true },
-  "exclude": [".docusaurus", "build"]
+  "include": ["src", "docusaurus.config.ts", "sidebars.ts"],
+  "exclude": [".docusaurus", "build", "node_modules", "hyprsimple"]
 }
