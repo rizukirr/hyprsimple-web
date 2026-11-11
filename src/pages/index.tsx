@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useBaseUrl, { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import repo from '@site/src/data/repo.json';
 import { THEMES, openPicker, setTheme, useTheme } from '@site/src/lib/theme';
-import ThemeStage, { HypriLanding } from '@site/src/components/ThemeStage';
+import { useDragScroll } from '@site/src/lib/useDragScroll';
+import ThemeStage from '@site/src/components/ThemeStage';
 import Keyboard from '@site/src/components/Keyboard';
 import Mapping from '@site/src/components/Mapping';
 import Command from '@site/src/components/Command';
@@ -39,11 +40,10 @@ function Hero() {
 function StageFallback() {
   const t = THEMES.find((x) => x.slug === 'deep-sea') ?? THEMES[0];
   return (
-    <figure className="hs-stage hs-stage--hypri">
+    <figure className="hs-stage">
       <div className="hs-stage__frame" data-slot="hero" data-kind="product">
         <img src={useBaseUrl(`/wallpapers/${t.slug}.webp`)} alt={`${t.name} wallpaper`} width={t.wall.width} height={t.wall.height} fetchPriority="high" />
       </div>
-      <HypriLanding />
     </figure>
   );
 }
@@ -51,18 +51,20 @@ function StageFallback() {
 function Rail() {
   const active = useTheme();
   const { withBaseUrl } = useBaseUrlUtils();
+  const rail = useRef<HTMLUListElement>(null);
+  useDragScroll(rail);
   return (
     <section className="hs-section hs-rail-section" aria-labelledby="themes-head">
       <div className="container hs-split-head">
         <h2 id="themes-head">Forty themes, one key</h2>
         <p className="lead">The bar, terminal, lock screen and btop change together, and so does this site.</p>
       </div>
-      <ul className="hs-rail" tabIndex={0} aria-label="Themes, scroll sideways">
+      <ul ref={rail} className="hs-rail" tabIndex={0} aria-label="Themes, scroll or drag sideways">
         {THEMES.map((t) => (
           <li key={t.slug}>
             <button type="button" className="hs-tile" aria-pressed={t.slug === active.slug} onClick={() => setTheme(t.slug)}>
               <span className="hs-tile__wall" data-slot={`rail-${t.slug}`} data-kind="product">
-                <img src={withBaseUrl(`/wallpapers/${t.slug}-s.webp`)} alt="" width={560} height={Math.round((560 * t.wall.height) / t.wall.width)} loading="lazy" decoding="async" />
+                <img src={withBaseUrl(`/wallpapers/${t.slug}-s.webp`)} alt="" width={560} height={Math.round((560 * t.wall.height) / t.wall.width)} loading="lazy" decoding="async" draggable={false} />
               </span>
               <span className="hs-tile__name">{t.name}</span>
               <Swatches theme={t} />
