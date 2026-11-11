@@ -519,7 +519,8 @@ div[class*="codeBlockTitle"] { background: var(--color-code-2); color: var(--col
 .hs-textbutton:hover { text-decoration-color: var(--color-accent); }
 .hs-textbutton:active { color: var(--color-ink-2); }
 .hs-textbutton:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.navbar__logo img { border-radius: 50%; }
+.navbar__logo { height: 32px; }
+.navbar__logo img { width: 32px; height: 32px; object-fit: contain; border-radius: 50%; }
 @media (max-width: 60rem) {
   .hs-empty, .hs-lost__grid { grid-template-columns: minmax(0, 1fr); }
   .hs-lost { min-height: 0; }
