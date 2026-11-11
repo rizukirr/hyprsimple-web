@@ -1,0 +1,80 @@
+name: Docs
+
+# The site is built from hyprsimple's newest release tag, so it describes what
+# installs get, never unreleased work on main. It publishes on every push to
+# main here, daily to pick up a new release, and on demand. Pull requests only
+# build.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'hyprsimple ref to build from (empty for the newest release tag)'
+        required: false
+  # hyprsimple can trigger a rebuild right after tagging:
+  #   gh api repos/rizukirr/hyprsimple-web/dispatches -f event_type=hyprsimple-release
+  repository_dispatch:
+    types: [hyprsimple-release]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HYPRSIMPLE_PATH: ${{ github.workspace }}/hyprsimple
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: rizukirr/hyprsimple
+          path: hyprsimple
+          fetch-depth: 0
+
+      - name: Move hyprsimple to the newest release tag
+        working-directory: hyprsimple
+        env:
+          REF: ${{ github.event.inputs.ref }}
+        run: |
+          ref="$REF"
+          if [ -z "$ref" ]; then
+            ref=$(git tag --list 'v*' --sort=-v:refname | head -n 1)
+          fi
+          echo "Building from hyprsimple $ref"
+          git checkout --quiet "$ref"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: build
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

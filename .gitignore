@@ -1,0 +1,13 @@
+node_modules/
+build/
+.docusaurus/
+.cache-loader/
+# written by scripts/sync.mjs from the repository root
+docs/
+static/wallpapers/
+src/data/
+src/css/themes.generated.css
+.hallmark/
+
+# the hyprsimple checkout the CI build reads from
+/hyprsimple/
