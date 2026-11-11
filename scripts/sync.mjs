@@ -62,7 +62,8 @@ function admonitions(md) {
   const kinds = { NOTE: 'note', TIP: 'tip', IMPORTANT: 'info', WARNING: 'warning', CAUTION: 'danger' };
   return md.replace(/^> \[!(\w+)\]\n((?:>.*\n?)*)/gim, (_, kind, body) => {
     const text = body.replace(/^> ?/gm, '').replace(/\n+$/, '');
-    return `:::${kinds[kind.toUpperCase()] ?? 'note'}\n\n${text}\n\n:::\n`;
+    const title = kind[0].toUpperCase() + kind.slice(1).toLowerCase();
+    return `:::${kinds[kind.toUpperCase()] ?? 'note'}[${title}]\n\n${text}\n\n:::\n`;
   });
 }
 

@@ -6,6 +6,7 @@
 /* Hallmark · waive 44c · the hero visual sits 78px off the text centre · the stage carries its theme caption bar under the wallpaper, which the text block has no partner for */
 /* Hallmark · answered F15 · the column gaps differ between the hero stage, the keyboard readout and the rows because each pairs a different kind of object */
 /* Hallmark · answered F1 · quotes and apostrophes stay straight because the project writes to the vibekit plain rules, which ban curly marks */
+/* Hallmark · waive 25 · docs paragraphs run the full content column with no character cap · the owner reads a capped measure as hard-wrapped lines and the plain rules want one paragraph to read as one unbroken line */
 /* Hallmark · dismissed 28a · the lazy image flagged is inside the closed theme picker dialog, never the LCP, and the hero wallpaper carries fetchpriority high */
 
 /* Cobalt's scale and material. Colours here are the fallback before a theme block from themes.generated.css takes over on <html>. */
@@ -413,7 +414,7 @@ a { text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
 .markdown h1 { line-height: 1.02; margin-bottom: var(--space-xl); }
 .markdown h2 { margin-top: var(--space-2xl); line-height: 1.1; }
 .markdown h3 { margin-top: var(--space-xl); }
-.markdown > p, .markdown li { max-width: 72ch; }
+.alert [class*="admonitionHeading"] { text-transform: none; font-family: var(--font-display); font-weight: 500; }
 .markdown table { display: table; width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
 .markdown table thead tr { border: 0; }
 .markdown th { text-align: left; font-family: var(--font-display); font-weight: 500; color: var(--color-muted); background: none; border: 0; border-bottom: var(--rule-hair) solid var(--color-rule-2); }
