@@ -2,8 +2,7 @@ node_modules/
 build/
 .docusaurus/
 .cache-loader/
-# written by scripts/sync.mjs from the repository root
-docs/
+# written by scripts/sync.mjs
 static/wallpapers/
 src/data/
 src/css/themes.generated.css

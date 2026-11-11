@@ -48,7 +48,7 @@ const config: Config = {
     [
       'classic',
       {
-        docs: { sidebarPath: './sidebars.ts', routeBasePath: 'docs' },
+        docs: { sidebarPath: './sidebars.ts', routeBasePath: 'docs', editUrl: 'https://github.com/rizukirr/hyprsimple-web/edit/main/' },
         blog: false,
         theme: { customCss: ['./src/css/themes.generated.css', './src/css/custom.css'] },
       } satisfies Preset.Options,

@@ -1,11 +1,11 @@
-// Builds everything the site reads from a hyprsimple checkout, so the site never holds a second copy of the docs or the themes. The checkout is HYPRSIMPLE_PATH, or ../hyprsimple beside this repository. It writes:
-//
-//   docs/                        README split by section, plus FAQ, PLUGINS, THEMING
+// Builds what the site reads from a hyprsimple checkout: its themes, its version and its ghostty template. The checkout is HYPRSIMPLE_PATH, or ../hyprsimple beside this repository. It writes:
 //   src/data/themes.json         every theme's palette, mode and wallpaper
-//   src/data/keys.json           the keybinding tables from the README
+//   src/data/keys.json           the keybinding tables from docs/keybindings.md
 //   src/css/themes.generated.css one token block per theme
 //   static/wallpapers/           a resized copy of each theme's first wallpaper
-import { readFile, writeFile, mkdir, readdir, rm, access, stat } from 'node:fs/promises';
+//   static/img/mascot/           web copies of the art in branding/mascot
+// The docs themselves live in docs/ in this repository and are edited there.
+import { readFile, writeFile, mkdir, readdir, access, stat } from 'node:fs/promises';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse as parseToml } from 'smol-toml';
@@ -13,109 +13,10 @@ import sharp from 'sharp';
 
 const SITE = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT = resolve(process.env.HYPRSIMPLE_PATH || join(SITE, '..', 'hyprsimple'));
-const REPO = 'https://github.com/rizukirr/hyprsimple';
 const THEMES = join(ROOT, '.config/hypr/themes');
 const DEFAULT_THEME = 'deep-sea';
 
 const exists = (p) => access(p).then(() => true, () => false);
-
-// ---------------------------------------------------------------- docs
-
-// Every README section becomes a page, in this order. Demo, FAQ and License have no page: the overview covers them, or they are dropped.
-const README_PAGES = [
-  { heading: null, id: 'overview', title: 'Overview', extra: ['Features'] },
-  { heading: 'Install', id: 'install' },
-  { heading: 'Update', id: 'update', title: 'Update and channels' },
-  { heading: 'Uninstall', id: 'uninstall' },
-  { heading: 'Keybindings', id: 'keybindings' },
-  { heading: 'Scripts', id: 'scripts' },
-  { heading: 'Audio', id: 'audio' },
-  { heading: 'Network', id: 'network' },
-];
-const OTHER_PAGES = [
-  { file: 'THEMING.md', id: 'theming', title: 'Theming' },
-  { file: 'PLUGINS.md', id: 'plugins', title: 'Plugins' },
-  { file: 'FAQ.md', id: 'faq', title: 'FAQ' },
-];
-
-const ROOT_DOC_LINKS = { 'PLUGINS.md': 'plugins', 'FAQ.md': 'faq', 'THEMING.md': 'theming', 'README.md': 'overview' };
-
-function splitSections(md) {
-  const lines = md.split('\n');
-  const sections = [];
-  let current = { heading: null, body: [] };
-  let fence = false;
-  for (const line of lines) {
-    if (/^```/.test(line)) fence = !fence;
-    const m = !fence && /^## (.+)$/.exec(line);
-    if (m) {
-      sections.push(current);
-      current = { heading: m[1].trim(), body: [] };
-    } else current.body.push(line);
-  }
-  sections.push(current);
-  return sections;
-}
-
-// GitHub callouts become Docusaurus admonitions.
-function admonitions(md) {
-  const kinds = { NOTE: 'note', TIP: 'tip', IMPORTANT: 'info', WARNING: 'warning', CAUTION: 'danger' };
-  return md.replace(/^> \[!(\w+)\]\n((?:>.*\n?)*)/gim, (_, kind, body) => {
-    const text = body.replace(/^> ?/gm, '').replace(/\n+$/, '');
-    const title = kind[0].toUpperCase() + kind.slice(1).toLowerCase();
-    return `:::${kinds[kind.toUpperCase()] ?? 'note'}[${title}]\n\n${text}\n\n:::\n`;
-  });
-}
-
-function links(md) {
-  return md.replace(/\]\(([^)\s]+)\)/g, (all, target) => {
-    if (/^(https?:|mailto:|#)/.test(target)) return all;
-    const [path, hash] = target.split('#');
-    if (ROOT_DOC_LINKS[path]) return `](./${ROOT_DOC_LINKS[path]}${hash ? `#${hash}` : ''})`;
-    return `](${REPO}/tree/main/${path.replace(/^\.\//, '')}${hash ? `#${hash}` : ''})`;
-  });
-}
-
-function page(id, title, position, body) {
-  const front = `---\nid: ${id}\ntitle: ${JSON.stringify(title)}\nsidebar_position: ${position}\ncustom_edit_url: null\n---\n\n`;
-  return front + admonitions(links(body)).trim() + '\n';
-}
-
-async function syncDocs() {
-  const out = join(SITE, 'docs');
-  await rm(out, { recursive: true, force: true });
-  await mkdir(out, { recursive: true });
-
-  const readme = await readFile(join(ROOT, 'README.md'), 'utf8');
-  const sections = splitSections(readme);
-  const byHeading = new Map(sections.map((s) => [s.heading, s.body.join('\n')]));
-  // A section nobody placed would vanish from the site without a word.
-  const placed = new Set([null, 'Demo', 'FAQ', 'License', ...README_PAGES.flatMap((p) => [p.heading, ...(p.extra ?? [])])]);
-  const unplaced = sections.map((s) => s.heading).filter((h) => !placed.has(h));
-  if (unplaced.length) throw new Error(`README sections with no page: ${unplaced.join(', ')}. Add them to README_PAGES in scripts/sync.mjs of hyprsimple-web`);
-  let position = 1;
-
-  for (const p of README_PAGES) {
-    let body;
-    if (p.heading === null) {
-      // The intro, without the H1 and the README's embedded screenshot.
-      body = byHeading.get(null).replace(/^# .*\n/, '').replace(/<img [^>]*\/>\n?/g, '');
-      for (const extra of p.extra) body += `\n## ${extra}\n${byHeading.get(extra)}`;
-    } else {
-      const raw = byHeading.get(p.heading);
-      if (raw === undefined) throw new Error(`README has no "## ${p.heading}" section`);
-      body = raw.replace(/^### /gm, '## ').replace(/^#### /gm, '### ');
-    }
-    await writeFile(join(out, `${p.id}.md`), page(p.id, p.title ?? p.heading, position++, body));
-  }
-
-  for (const p of OTHER_PAGES) {
-    const raw = await readFile(join(ROOT, p.file), 'utf8');
-    await writeFile(join(out, `${p.id}.md`), page(p.id, p.title, position++, raw.replace(/^# .*\n/, '')));
-  }
-
-  return byHeading.get('Keybindings');
-}
 
 // ---------------------------------------------------------------- keys
 
@@ -123,7 +24,7 @@ function parseKeys(section) {
   const groups = [];
   let group = null;
   for (const line of section.split('\n')) {
-    const h = /^### (.+)$/.exec(line);
+    const h = /^## (.+)$/.exec(line);
     if (h) { group = { name: h[1].trim(), bindings: [] }; groups.push(group); continue; }
     const row = /^\| `([^`]+)` \| (.+?) \|\s*$/.exec(line);
     if (row && group) group.bindings.push({ combo: row[1].trim(), action: row[2].trim() });
@@ -283,12 +184,12 @@ async function syncMascot() {
 
 // ---------------------------------------------------------------- main
 
-if (!(await exists(join(ROOT, 'README.md'))) || !(await exists(THEMES))) {
+if (!(await exists(THEMES))) {
   console.error(`sync: no hyprsimple checkout at ${ROOT}. Clone it beside this repository, or set HYPRSIMPLE_PATH.`);
   process.exit(1);
 }
 await mkdir(join(SITE, 'src/data'), { recursive: true });
-const keySection = await syncDocs();
+const keySection = await readFile(join(SITE, 'docs/keybindings.md'), 'utf8');
 const themes = await syncThemes();
 const keys = parseKeys(keySection);
 const mascot = await syncMascot();
