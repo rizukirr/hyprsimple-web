@@ -18,7 +18,7 @@ Muslimtify is installed by default as an [external plugin](https://github.com/mu
 
 ## Features
 
-- Switch between **40 themes** with one key, and every app follows at once: the bar with its menus and notifications, ghostty, hyprlock and btop. The well known colorschemes are here, Dracula, Solarized, Catppuccin, Tokyo Night, Rosé Pine, Gruvbox, Nord, Everforest, Kanagawa, Ayu, Nightfox, Oxocarbon and more, in dark and light.
+- Switch between **41 themes** with one key, and every app follows at once: the bar with its menus and notifications, ghostty, hyprlock and btop. The default is hyprsimple, made from the colours of Hypri, the mascot, with three rainy night wallpapers of her. The well known colorschemes are here too, Dracula, Solarized, Catppuccin, Tokyo Night, Rosé Pine, Gruvbox, Nord, Everforest, Kanagawa, Ayu, Nightfox, Oxocarbon and more, in dark and light.
 - Pick themes and wallpapers visually, from a carousel of previews in a panel of the bar, with each theme's colour swatches, filterable by typing.
 - Every theme has its own wallpapers, with a picker and a cycle switch.
 - The installer detects your hardware: NVIDIA, hybrid GPU power saving, Vulkan, Intel iGPU, WiFi and battery.
