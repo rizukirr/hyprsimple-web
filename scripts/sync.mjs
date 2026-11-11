@@ -14,7 +14,6 @@ import sharp from 'sharp';
 const SITE = join(dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT = resolve(process.env.HYPRSIMPLE_PATH || join(SITE, '..', 'hyprsimple'));
 const THEMES = join(ROOT, '.config/hypr/themes');
-const DEFAULT_THEME = 'deep-sea';
 
 const exists = (p) => access(p).then(() => true, () => false);
 
@@ -99,7 +98,7 @@ function tokensFor(c, light) {
 
 // ---------------------------------------------------------------- themes
 
-const pretty = (slug) => slug.split('-').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ')
+const pretty = (slug) => slug === 'hyprsimple' ? 'hyprsimple' : slug.split('-').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ')
   .replace('Rosepine', 'Rosé Pine').replace('Catppuccin Latte', 'Catppuccin Latte').replace('Github', 'GitHub');
 
 async function syncThemes() {
@@ -196,7 +195,20 @@ const template = await readFile(join(THEMES, 'templates/ghostty.conf.tpl'), 'utf
 const scripts = (await readdir(join(ROOT, '.local/bin'))).filter((f) => !f.startsWith('.')).length;
 const version = (await readFile(join(ROOT, 'version'), 'utf8')).trim();
 
-await writeFile(join(SITE, 'src/data/themes.json'), JSON.stringify({ defaultTheme: DEFAULT_THEME, themes }, null, 1));
+// The default is whatever install.sh applies, so the site opens in the theme a fresh install gets.
+const installed = /^DEFAULT_THEME="([^"]+)"$/m.exec(await readFile(join(ROOT, 'install.sh'), 'utf8'))?.[1];
+const defaultTheme = themes.some((t) => t.slug === installed) ? installed : themes[0].slug;
+
+// The count in words, for copy like "Forty-one themes", so the pages never state a stale number.
+const words = (n) => {
+  const ones = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  const tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+  if (n < 20) return ones[n];
+  if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 ? `-${ones[n % 10]}` : '');
+  return String(n);
+};
+
+await writeFile(join(SITE, 'src/data/themes.json'), JSON.stringify({ defaultTheme, count: themes.length, countWords: words(themes.length), themes }, null, 1));
 await writeFile(join(SITE, 'src/data/keys.json'), JSON.stringify(keys, null, 1));
 await writeFile(join(SITE, 'src/data/repo.json'), JSON.stringify({ version, scripts, ghosttyTemplate: template }, null, 1));
 console.log(`sync: ${ROOT}, ${themes.length} themes, ${keys.reduce((n, g) => n + g.bindings.length, 0)} bindings, ${scripts} scripts, ${mascot} mascot images, v${version}`);

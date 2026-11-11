@@ -31,7 +31,7 @@ const themeBootstrap = ({ baseUrl }: LoadContext): Plugin => ({
 
 const config: Config = {
   title: 'hyprsimple',
-  tagline: 'Minimalist Hyprland dotfiles for Arch Linux, with forty themes every app follows.',
+  tagline: `Minimalist Hyprland dotfiles for Arch Linux, with ${themeData.countWords} themes every app follows.`,
   favicon: 'img/mascot/favicon.ico',
   url: 'https://rizukirr.github.io',
   // GitHub Pages serves this repository under its own name.

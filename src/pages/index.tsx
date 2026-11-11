@@ -4,7 +4,7 @@ import Link from '@docusaurus/Link';
 import useBaseUrl, { useBaseUrlUtils } from '@docusaurus/useBaseUrl';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import repo from '@site/src/data/repo.json';
-import { THEMES, openPicker, setTheme, useTheme } from '@site/src/lib/theme';
+import { COUNT_WORDS, COUNT_WORDS_TITLE, THEMES, openPicker, setTheme, useTheme } from '@site/src/lib/theme';
 import { useDragScroll } from '@site/src/lib/useDragScroll';
 import ThemeStage from '@site/src/components/ThemeStage';
 import Keyboard from '@site/src/components/Keyboard';
@@ -20,7 +20,7 @@ function Hero() {
       <div className="container hs-hero__grid">
         <div className="hs-hero__text">
           <h1>Hyprland on Arch, nothing extra.</h1>
-          <p className="lead">Forty themes, and every app follows the one you pick.</p>
+          <p className="lead">{COUNT_WORDS_TITLE} themes, and every app follows the one you pick.</p>
           <div className="hs-actions">
             <Link className="hs-key hs-key--primary" to="/docs/install">
               Read the install guide
@@ -56,7 +56,7 @@ function Rail() {
   return (
     <section className="hs-section hs-rail-section" aria-labelledby="themes-head">
       <div className="container hs-split-head">
-        <h2 id="themes-head">Forty themes, one key</h2>
+        <h2 id="themes-head">{COUNT_WORDS_TITLE} themes, one key</h2>
         <p className="lead">The bar, terminal, lock screen and btop change together, and so does this site.</p>
       </div>
       <ul ref={rail} className="hs-rail" tabIndex={0} aria-label="Themes, scroll or drag sideways">
@@ -190,7 +190,7 @@ export default function Home(): React.ReactNode {
   return (
     <Layout
       title="Hyprland dotfiles for Arch Linux"
-      description="hyprsimple is a minimalist Hyprland setup for Arch Linux, with forty themes that recolour the bar, terminal, lock screen and btop at once."
+      description={`hyprsimple is a minimalist Hyprland setup for Arch Linux, with ${COUNT_WORDS} themes that recolour the bar, terminal, lock screen and btop at once.`}
       wrapperClassName="hs-home"
     >
       <main>

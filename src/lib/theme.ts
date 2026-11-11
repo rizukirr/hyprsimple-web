@@ -4,6 +4,9 @@ import data from '@site/src/data/themes.json';
 export type Theme = (typeof data.themes)[number];
 export const THEMES: Theme[] = data.themes;
 export const DEFAULT_THEME: string = data.defaultTheme;
+// "forty-one", and "Forty-one" for the start of a sentence.
+export const COUNT_WORDS: string = data.countWords;
+export const COUNT_WORDS_TITLE: string = data.countWords[0].toUpperCase() + data.countWords.slice(1);
 
 const listeners = new Set<() => void>();
 

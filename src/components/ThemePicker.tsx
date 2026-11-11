@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useColorMode } from '@docusaurus/theme-common';
 import { EmptyState } from './Hypri';
-import { THEMES, OPEN_PICKER, openPicker, setTheme, stepTheme, typing, useTheme, type Theme } from '@site/src/lib/theme';
+import { COUNT_WORDS, THEMES, OPEN_PICKER, openPicker, setTheme, stepTheme, typing, useTheme, type Theme } from '@site/src/lib/theme';
 
 export function Swatches({ theme, count = 8 }: { theme: Theme; count?: number }) {
   const keys = ['accent', 'color1', 'color2', 'color3', 'color4', 'color5', 'color6', 'foreground'].slice(0, count);
@@ -112,7 +112,7 @@ export function PickerDialog() {
           </button>
         </div>
         <p className="hs-picker__hint">
-          The same forty themes as <kbd>SUPER</kbd> <kbd>SHIFT</kbd> <kbd>T</kbd> on the desktop. <kbd>[</kbd> and <kbd>]</kbd> step through them anywhere on this site.
+          The same {COUNT_WORDS} themes as <kbd>SUPER</kbd> <kbd>SHIFT</kbd> <kbd>T</kbd> on the desktop. <kbd>[</kbd> and <kbd>]</kbd> step through them anywhere on this site.
         </p>
         {shown.length ? (
           <ul className="hs-picker__grid">
@@ -124,7 +124,7 @@ export function PickerDialog() {
           <div className="hs-picker__empty">
             <EmptyState art="empty-theme">
               <p>No theme matches "{query}".</p>
-              <p>Clear the filter to see all forty, or type light or dark.</p>
+              <p>Clear the filter to see all {COUNT_WORDS}, or type light or dark.</p>
             </EmptyState>
           </div>
         )}
