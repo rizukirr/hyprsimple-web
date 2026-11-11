@@ -156,7 +156,6 @@ async function syncMascot() {
   // [output, source, make]. A copy is rebuilt whenever its source is newer.
   const jobs = [
     ['favicon.ico', 'hypri-favicon.ico', async (i, o) => writeFile(o, await readFile(i))],
-    ['icon-64.png', 'hypri-icon-64.png', (i, o) => sharp(i).png().toFile(o)],
     ['icon-180.png', 'hypri-icon-180.png', (i, o) => sharp(i).png().toFile(o)],
     ['social.jpg', 'hyprsimple-social-1200x630.png', (i, o) => sharp(i).jpeg({ quality: 86, mozjpeg: true }).toFile(o)],
     // The art below is cut out on transparency, so it sits on whichever theme is on.
