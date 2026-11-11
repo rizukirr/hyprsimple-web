@@ -242,6 +242,29 @@ async function syncThemes() {
   return themes;
 }
 
+// ---------------------------------------------------------------- mascot
+
+// Web copies of Hypri from branding/mascot/assets, the full-size art kept in this repository.
+const MASCOT = join(SITE, 'branding/mascot/assets');
+const MASCOT_OUT = join(SITE, 'static/img/mascot');
+
+async function syncMascot() {
+  await mkdir(MASCOT_OUT, { recursive: true });
+  const src = (f) => join(MASCOT, f);
+  const out = (f) => join(MASCOT_OUT, f);
+  const jobs = [
+    ['favicon.ico', async () => writeFile(out('favicon.ico'), await readFile(src('hypri-favicon.ico')))],
+    ['icon-64.png', () => sharp(src('hypri-icon-64.png')).png().toFile(out('icon-64.png'))],
+    ['icon-180.png', () => sharp(src('hypri-icon-180.png')).png().toFile(out('icon-180.png'))],
+    ['social.jpg', () => sharp(src('hyprsimple-social-1200x630.png')).jpeg({ quality: 86, mozjpeg: true }).toFile(out('social.jpg'))],
+    ['empty.webp', () => sharp(src('a_detailed_anime_style_digital_illustration_in_a.png')).flatten({ background: '#181e45' }).resize({ width: 960 }).webp({ quality: 78 }).toFile(out('empty.webp'))],
+    // The source has a broken cutout in its top right corner. Flattening onto the scene's own navy fills it.
+    ['lost.webp', () => sharp(src('a_detailed_anime_style_digital_illustration_a_se.png')).flatten({ background: '#181e45' }).resize({ width: 1280 }).webp({ quality: 78 }).toFile(out('lost.webp'))],
+  ];
+  for (const [name, make] of jobs) if (!(await exists(out(name)))) await make();
+  return jobs.length;
+}
+
 // ---------------------------------------------------------------- main
 
 if (!(await exists(join(ROOT, 'README.md'))) || !(await exists(THEMES))) {
@@ -252,6 +275,7 @@ await mkdir(join(SITE, 'src/data'), { recursive: true });
 const keySection = await syncDocs();
 const themes = await syncThemes();
 const keys = parseKeys(keySection);
+const mascot = await syncMascot();
 const template = await readFile(join(THEMES, 'templates/ghostty.conf.tpl'), 'utf8');
 const scripts = (await readdir(join(ROOT, '.local/bin'))).filter((f) => !f.startsWith('.')).length;
 const version = (await readFile(join(ROOT, 'version'), 'utf8')).trim();
@@ -259,4 +283,4 @@ const version = (await readFile(join(ROOT, 'version'), 'utf8')).trim();
 await writeFile(join(SITE, 'src/data/themes.json'), JSON.stringify({ defaultTheme: DEFAULT_THEME, themes }, null, 1));
 await writeFile(join(SITE, 'src/data/keys.json'), JSON.stringify(keys, null, 1));
 await writeFile(join(SITE, 'src/data/repo.json'), JSON.stringify({ version, scripts, ghosttyTemplate: template }, null, 1));
-console.log(`sync: ${ROOT}, ${themes.length} themes, ${keys.reduce((n, g) => n + g.bindings.length, 0)} bindings, ${scripts} scripts, v${version}`);
+console.log(`sync: ${ROOT}, ${themes.length} themes, ${keys.reduce((n, g) => n + g.bindings.length, 0)} bindings, ${scripts} scripts, ${mascot} mascot images, v${version}`);

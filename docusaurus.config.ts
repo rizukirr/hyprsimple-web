@@ -1,11 +1,11 @@
-import type { Config, Plugin } from '@docusaurus/types';
+import type { Config, LoadContext, Plugin } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import themeData from './src/data/themes.json';
 
 const REPO = 'https://github.com/rizukirr/hyprsimple';
 
 // Puts the chosen hyprsimple theme on <html> before first paint, and tells Docusaurus whether that theme is light or dark, so nothing flashes.
-const themeBootstrap = (): Plugin => ({
+const themeBootstrap = ({ baseUrl }: LoadContext): Plugin => ({
   name: 'hyprsimple-theme-bootstrap',
   injectHtmlTags() {
     const light = themeData.themes.filter((t) => t.light).map((t) => t.slug);
@@ -14,6 +14,7 @@ const themeBootstrap = (): Plugin => ({
     return {
       headTags: [
         { tagName: 'script', innerHTML: script },
+        { tagName: 'link', attributes: { rel: 'apple-touch-icon', href: `${baseUrl}img/mascot/icon-180.png` } },
         { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
         { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' } },
         {
@@ -31,7 +32,7 @@ const themeBootstrap = (): Plugin => ({
 const config: Config = {
   title: 'hyprsimple',
   tagline: 'Minimalist Hyprland dotfiles for Arch Linux, with forty themes every app follows.',
-  favicon: 'img/favicon.svg',
+  favicon: 'img/mascot/favicon.ico',
   url: 'https://rizukirr.github.io',
   // GitHub Pages serves this repository under its own name.
   baseUrl: '/hyprsimple-web/',
@@ -64,10 +65,11 @@ const config: Config = {
   ],
 
   themeConfig: {
+    image: 'img/mascot/social.jpg',
     colorMode: { defaultMode: 'dark', disableSwitch: false, respectPrefersColorScheme: false },
     navbar: {
       title: 'hyprsimple',
-      logo: { alt: 'hyprsimple home', src: 'img/favicon.svg', width: 22, height: 22 },
+      logo: { alt: 'hyprsimple home', src: 'img/mascot/icon-64.png', width: 28, height: 28 },
       hideOnScroll: false,
       items: [
         { type: 'docSidebar', sidebarId: 'docs', position: 'left', label: 'Docs' },

@@ -3,6 +3,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import groups from '@site/src/data/keys.json';
 import Keyboard, { Combo } from '@site/src/components/Keyboard';
+import { EmptyState } from '@site/src/components/Hypri';
 
 export default function Keys(): React.ReactNode {
   const [query, setQuery] = useState('');
@@ -63,7 +64,12 @@ export default function Keys(): React.ReactNode {
                 </tbody>
               </table>
             ))}
-            {!total && <p>No binding matches "{query}". Clear the filter to see all of them.</p>}
+            {!total && (
+              <EmptyState>
+                <p>No binding matches "{query}".</p>
+                <p>Clear the filter to see all of them, or search for a key such as SHIFT.</p>
+              </EmptyState>
+            )}
             <p className="hs-more">
               <Link to="/docs/keybindings">The same list, with notes, in the docs</Link>
             </p>

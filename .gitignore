@@ -11,3 +11,4 @@ src/css/themes.generated.css
 
 # the hyprsimple checkout the CI build reads from
 /hyprsimple/
+static/img/mascot/

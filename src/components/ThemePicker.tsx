@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useColorMode } from '@docusaurus/theme-common';
+import { EmptyState } from './Hypri';
 import { THEMES, OPEN_PICKER, openPicker, setTheme, stepTheme, typing, useTheme, type Theme } from '@site/src/lib/theme';
 
 export function Swatches({ theme, count = 8 }: { theme: Theme; count?: number }) {
@@ -120,7 +121,12 @@ export function PickerDialog() {
             ))}
           </ul>
         ) : (
-          <p className="hs-picker__empty">No theme matches "{query}". Clear the filter to see all forty.</p>
+          <div className="hs-picker__empty">
+            <EmptyState>
+              <p>No theme matches "{query}".</p>
+              <p>Clear the filter to see all forty, or type light or dark.</p>
+            </EmptyState>
+          </div>
         )}
       </dialog>
   );

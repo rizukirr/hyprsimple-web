@@ -1,0 +1,1 @@
+Use the attached Hypri character reference as the canonical identity. Preserve her facial features, hairstyle, clothing, colors, and accessories. Draw her sitting at a Linux desktop in a cozy nighttime environment. Only change the pose, expression, and background.
