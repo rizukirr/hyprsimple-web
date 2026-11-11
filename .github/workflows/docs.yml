@@ -1,9 +1,6 @@
 name: Docs
 
-# The site is built from hyprsimple's newest release tag, so it describes what
-# installs get, never unreleased work on main. It publishes on every push to
-# main here, daily to pick up a new release, and on demand. Pull requests only
-# build.
+# The site is built from hyprsimple's newest release tag, so it describes what installs get, never unreleased work on main. It publishes on every push to main here, daily to pick up a new release, and on demand. Pull requests only build.
 on:
   push:
     branches: [main]

@@ -4,8 +4,7 @@ import themeData from './src/data/themes.json';
 
 const REPO = 'https://github.com/rizukirr/hyprsimple';
 
-// Puts the chosen hyprsimple theme on <html> before first paint, and tells
-// Docusaurus whether that theme is light or dark, so nothing flashes.
+// Puts the chosen hyprsimple theme on <html> before first paint, and tells Docusaurus whether that theme is light or dark, so nothing flashes.
 const themeBootstrap = (): Plugin => ({
   name: 'hyprsimple-theme-bootstrap',
   injectHtmlTags() {

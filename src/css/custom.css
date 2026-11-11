@@ -1,14 +1,14 @@
 /* Hallmark · shape: Workbench (draw c58202 dealt Stat-Led, swapped: no figures the repo states as claims) · genre: modern-minimal · theme: Cobalt (deal 1/3, seed docusaurus-documentation-hyprsimple-minimalist-7d6d·798eeabd·2026-11-11·r0) · job: sign up (install) · draw: c58202
  * hero: Stage (draw dealt Corridor, swapped: the wallpaper stage is the signature) · nav: search-led bar (draw dealt masthead, swapped: Docusaurus docs chrome) · footer: mast · imagery: the product, 40 theme wallpapers and one README screenshot, data-kind product · signature: the active theme's wallpaper half redrawn as glyphs in its own sixteen colours, and the whole site recoloured by any of the forty themes
  * axes: themed/grotesk-sans/per-theme · posture: restrained · contrast: computed per theme in scripts/sync.mjs · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P and R, a docs home could drift into a feature tour; each section is a working piece of the product (the theme switch, the template render, the bindings) and the figure row was cut */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P and R, a docs home could drift into a feature tour, so each section is a working piece of the product (the theme switch, the template render, the bindings) and the figure row was cut */
 /* Hallmark · waive 39b · theme tiles in the rail are whole-card buttons 239px tall · the wallpaper card is the control for picking a hyprsimple theme, so its height is the picture's */
 /* Hallmark · waive 44c · the hero visual sits 78px off the text centre · the stage carries its theme caption bar under the wallpaper, which the text block has no partner for */
 /* Hallmark · answered F15 · the column gaps differ between the hero stage, the keyboard readout and the rows because each pairs a different kind of object */
-/* Hallmark · dismissed 28a · the lazy image flagged is inside the closed theme picker dialog, never the LCP; the hero wallpaper carries fetchpriority high */
+/* Hallmark · answered F1 · quotes and apostrophes stay straight because the project writes to the vibekit plain rules, which ban curly marks */
+/* Hallmark · dismissed 28a · the lazy image flagged is inside the closed theme picker dialog, never the LCP, and the hero wallpaper carries fetchpriority high */
 
-/* Cobalt's scale and material. Colours here are the fallback before a
-   theme block from themes.generated.css takes over on <html>. */
+/* Cobalt's scale and material. Colours here are the fallback before a theme block from themes.generated.css takes over on <html>. */
 :root {
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
   --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
@@ -206,7 +206,7 @@ a { text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
 .hs-section { padding-block: var(--section-gap-s) 0; }
 .hs-section--l { padding-top: var(--section-gap); }
 .hs-section--top { padding-top: var(--space-3xl); }
-.hs-section h2 { font-size: var(--text-section); line-height: 1.04; margin: 0; max-width: 18ch; }
+.hs-section h2 { font-size: var(--text-section); line-height: 1.04; margin: 0; max-width: none; }
 .hs-split-head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-2xl); }
 .hs-split-head .lead { justify-self: end; }
 .hs-more { margin: var(--space-lg) 0 0; font-weight: 500; }
@@ -217,14 +217,14 @@ a { text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
 /* ---------------------------------------------------------- hero */
 
 .hs-hero { padding-block: var(--space-2xl); min-height: calc(100dvh - var(--nav-h)); display: grid; align-items: center; }
-.hs-hero__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: center; }
-.hs-hero h1 { font-size: var(--text-display); line-height: 1.0; margin: 0 0 var(--space-lg); max-width: 12ch; }
-.hs-hero .lead { margin-bottom: var(--space-xl); max-width: 30ch; }
+.hs-hero__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--space-2xl); align-items: center; }
+.hs-hero h1 { font-size: var(--text-display); line-height: 1.0; margin: 0 0 var(--space-lg); max-width: none; }
+.hs-hero .lead { margin-bottom: var(--space-xl); max-width: none; }
 .hs-hero__command { margin-top: var(--space-xl); }
 
 .hs-stage { margin: 0; }
 .hs-stage__frame {
-  position: relative; overflow: hidden; aspect-ratio: 16 / 10; max-height: 68dvh; width: 100%;
+  position: relative; overflow: hidden; aspect-ratio: 4 / 3; max-height: 72dvh; width: 100%;
   border-radius: var(--radius-card); background: var(--color-paper-2);
   outline: 1px solid var(--color-rule); outline-offset: -1px;
   cursor: ew-resize; touch-action: pan-y;

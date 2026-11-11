@@ -2,10 +2,7 @@ import React, { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import groups from '@site/src/data/keys.json';
 
-// The README's keybinding tables, laid on a keyboard. Hold modifiers by
-// clicking them; every key that does something with that set lights up.
-// When the keyboard has focus, real key presses select keys too (SUPER
-// stays a click, since the desktop keeps it for itself).
+// The README's keybinding tables, laid on a keyboard. Click a modifier to hold it, and every key that does something with the held set lights up. When the keyboard has focus, real key presses select keys too. SUPER stays a click, since the desktop keeps it for itself.
 
 type Mod = 'SUPER' | 'SHIFT' | 'CTRL' | 'ALT';
 const MODS: Mod[] = ['SUPER', 'SHIFT', 'CTRL', 'ALT'];

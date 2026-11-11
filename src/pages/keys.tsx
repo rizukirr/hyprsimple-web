@@ -63,7 +63,7 @@ export default function Keys(): React.ReactNode {
                 </tbody>
               </table>
             ))}
-            {!total && <p>No binding matches “{query}”. Clear the filter to see all of them.</p>}
+            {!total && <p>No binding matches "{query}". Clear the filter to see all of them.</p>}
             <p className="hs-more">
               <Link to="/docs/keybindings">The same list, with notes, in the docs</Link>
             </p>

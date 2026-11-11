@@ -120,7 +120,7 @@ export function PickerDialog() {
             ))}
           </ul>
         ) : (
-          <p className="hs-picker__empty">No theme matches “{query}”. Clear the filter to see all forty.</p>
+          <p className="hs-picker__empty">No theme matches "{query}". Clear the filter to see all forty.</p>
         )}
       </dialog>
   );

@@ -3,9 +3,7 @@ import clsx from 'clsx';
 import repo from '@site/src/data/repo.json';
 import { useTheme } from '@site/src/lib/theme';
 
-// colors.toml on the left, the ghostty.conf the template renders from it on
-// the right, for whichever theme is active. Matching lines are joined. The
-// sixteen palette entries show as one row of swatches on each side.
+// colors.toml on the left, the ghostty.conf the template renders from it on the right, for whichever theme is active. Matching lines are joined. The sixteen palette entries show as one row of swatches on each side.
 
 const LH = 28; // px per line, shared with the CSS through --lh
 const PAD = 16;

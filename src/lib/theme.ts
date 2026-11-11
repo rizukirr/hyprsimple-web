@@ -18,7 +18,7 @@ export function setTheme(slug: string): void {
   try {
     localStorage.setItem('hs-theme', slug);
   } catch {
-    // Private windows may refuse storage; the theme still applies for this visit.
+    // Private windows may refuse storage. The theme still applies for this visit.
   }
   listeners.forEach((l) => l());
 }

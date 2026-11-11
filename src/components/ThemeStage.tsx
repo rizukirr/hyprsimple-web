@@ -3,9 +3,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import { THEMES, openPicker, stepTheme, useTheme, type Theme } from '@site/src/lib/theme';
 import { Swatches } from './ThemePicker';
 
-// The active theme's wallpaper, the left part redrawn as a terminal would:
-// one glyph per 8 by 16 cell, each in the nearest of the theme's sixteen
-// colours. The split follows the pointer, or the arrow keys.
+// The active theme's wallpaper, the left part redrawn as a terminal would: one glyph per 8 by 16 cell, each in the nearest of the theme's sixteen colours. The split follows the pointer, or the arrow keys.
 const CELL_W = 8;
 const CELL_H = 16;
 const RAMP = ' .:-=+*#%@';
@@ -91,7 +89,7 @@ export default function ThemeStage() {
   }, [draw]);
 
   useEffect(() => {
-    // Fonts arrive after first paint; redraw once the mono face is in.
+    // Fonts arrive after first paint. Redraw once the mono face is in.
     document.fonts?.ready.then(draw);
   }, [draw]);
 

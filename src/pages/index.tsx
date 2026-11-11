@@ -80,7 +80,7 @@ function Palette() {
         <div className="hs-split-head">
           <h2 id="palette-head">One palette, every program</h2>
           <p className="lead">
-            Templates turn one <code>colors.toml</code> into each app’s config. Here is ghostty’s.
+            Templates turn one <code>colors.toml</code> into each app's config. Here is ghostty's.
           </p>
         </div>
         <BrowserOnly>{() => <Mapping />}</BrowserOnly>

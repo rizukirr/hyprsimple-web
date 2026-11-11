@@ -1,6 +1,4 @@
-// Builds everything the site reads from a hyprsimple checkout, so the site
-// never holds a second copy of the docs or the themes. The checkout is
-// HYPRSIMPLE_PATH, or ../hyprsimple beside this repository.
+// Builds everything the site reads from a hyprsimple checkout, so the site never holds a second copy of the docs or the themes. The checkout is HYPRSIMPLE_PATH, or ../hyprsimple beside this repository. It writes:
 //
 //   docs/                        README split by section, plus FAQ, PLUGINS, THEMING
 //   src/data/themes.json         every theme's palette, mode and wallpaper
@@ -23,8 +21,7 @@ const exists = (p) => access(p).then(() => true, () => false);
 
 // ---------------------------------------------------------------- docs
 
-// Every README section becomes a page, in this order. Sections not listed
-// (Demo, FAQ, License) are folded into the overview or dropped.
+// Every README section becomes a page, in this order. Demo, FAQ and License have no page: the overview covers them, or they are dropped.
 const README_PAGES = [
   { heading: null, id: 'overview', title: 'Overview', extra: ['Features'] },
   { heading: 'Install', id: 'install' },
@@ -145,8 +142,7 @@ const luminance = (hex) => { const [r, g, b] = hexToRgb(hex).map(lin); return 0.
 const contrast = (a, b) => { const [x, y] = [luminance(a), luminance(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
 const mix = (a, b, t) => { const A = hexToRgb(a), B = hexToRgb(b); return rgbToHex(A.map((c, i) => c + (B[i] - c) * t)); };
 
-// Moves a colour towards `toward` until it reads at `ratio` on `surface`,
-// keeping it untouched when it already does, the way hyprsimple's bar does.
+// Moves a colour towards `toward` until it reads at `ratio` on `surface`, and leaves it untouched when it already does, the way hyprsimple's bar does.
 function readable(color, surface, ratio, toward) {
   for (let t = 0; t <= 1.0001; t += 0.04) {
     const c = mix(color, toward, t);
