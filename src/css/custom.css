@@ -506,15 +506,10 @@ div[class*="codeBlockTitle"] { background: var(--color-code-2); color: var(--col
 
 .hs-empty { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); gap: var(--space-xl); align-items: center; padding-block: var(--space-lg); }
 .hs-empty--empty-theme { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
-/* The frames hug the picture, so the floor shadow under Hypri lines up with her. --floor-l and --floor-w are where her body meets the bottom edge, measured from each picture. */
-.hs-empty__art, .hs-lost__art { position: relative; isolation: isolate; width: fit-content; max-width: 100%; margin: 0; }
-.hs-empty__art img, .hs-lost__art img { position: relative; z-index: 1; display: block; width: auto; max-width: 100%; height: auto; }
+/* The frames hug the picture. The art carries its own floor shadow. */
+.hs-empty__art, .hs-lost__art { width: fit-content; max-width: 100%; margin: 0; }
+.hs-empty__art img, .hs-lost__art img { display: block; width: auto; max-width: 100%; height: auto; }
 .hs-empty__art img { max-height: 420px; }
-.hs-empty__art::after, .hs-lost__art::after { content: ""; position: absolute; z-index: 0; bottom: 0; left: var(--floor-l); width: var(--floor-w); aspect-ratio: 9 / 1; transform: translateY(45%); background: radial-gradient(closest-side, color-mix(in oklab, var(--color-shadow) 55%, transparent), transparent); pointer-events: none; }
-html[data-theme="dark"] .hs-empty__art::after, html[data-theme="dark"] .hs-lost__art::after { background: radial-gradient(closest-side, color-mix(in oklab, var(--color-shadow) 92%, transparent), transparent); aspect-ratio: 7 / 1; }
-.hs-lost__art { --floor-l: 9%; --floor-w: 59%; }
-.hs-empty--empty-theme .hs-empty__art { --floor-l: 2%; --floor-w: 52%; }
-.hs-empty--empty .hs-empty__art { --floor-l: 6%; --floor-w: 92%; }
 .hs-empty__text p { margin: 0 0 var(--space-xs); color: var(--color-muted); }
 .hs-empty__text p:first-child { font: 500 var(--text-title)/1.2 var(--font-display); letter-spacing: -0.015em; color: var(--color-ink); margin-bottom: var(--space-sm); }
 

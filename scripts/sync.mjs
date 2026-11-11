@@ -262,13 +262,16 @@ async function syncMascot() {
     ['lost.webp', '404-not-found.png', (i, o) => sharp(i).resize({ width: 1280 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o)],
     ['empty-theme.webp', 'theme-not-found.png', (i, o) => sharp(i).resize({ width: 1024 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o)],
     // Hypri alone, without the "No theme matches" panel, for searches that are not about themes.
-    // Her knee reaches past the panel's left edge, so the crop keeps 800px and the strip where the panel's edge sits is cleared.
+    // Hypri alone: the crop keeps her knee, which reaches past the panel's left edge, and a cut shaped to the panel's slanted edge clears the rest of it.
     ['empty.webp', 'theme-not-found.png', async (i, o) => {
-      const rect = (w, h) => Buffer.from(`<svg width="${w}" height="${h}"><rect width="${w}" height="${h}"/></svg>`);
-      const panelless = await sharp(i).extract({ left: 0, top: 0, width: 800, height: 1024 })
-        .composite([{ input: rect(72, 470), left: 728, top: 250, blend: 'dest-out' }, { input: rect(40, 80), left: 760, top: 180, blend: 'dest-out' }])
-        .png().toBuffer();
-      await sharp(panelless).resize({ width: 520 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o);
+      // The crop runs 80px past her shoe so her built-in floor shadow can fade out there instead of stopping at the edge.
+      const cut = Buffer.from(`<svg width="880" height="1024">
+        <defs><linearGradient id="fade"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="1"/></linearGradient></defs>
+        <polygon points="767,190 880,190 880,700 726,700 714,688"/>
+        <rect x="800" y="700" width="80" height="324" fill="url(#fade)"/>
+      </svg>`);
+      const panelless = await sharp(i).extract({ left: 0, top: 0, width: 880, height: 1024 }).composite([{ input: cut, left: 0, top: 0, blend: 'dest-out' }]).png().toBuffer();
+      await sharp(panelless).resize({ width: 572 }).webp({ quality: 80, alphaQuality: 90 }).toFile(o);
     }],
   ];
   for (const [name, from, make] of jobs) {
